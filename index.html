@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flor de Amor 💖</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffd1dc, #fff0f5);
+    }
+
+    .container {
+      width: 90%;
+      max-width: 340px;
+      background: white;
+      padding: 28px;
+      border-radius: 22px;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,.3);
+      animation: fadeIn 1s ease;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #c2185b;
+      text-shadow: 1px 1px 2px rgba(0,0,0,.15);
+    }
+
+    p {
+      font-size: 15px;
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .input-display {
+      font-size: 32px;
+      letter-spacing: 8px;
+      margin-bottom: 20px;
+      color: #ad1457;
+      font-weight: 600;
+      text-shadow: 1px 1px 3px rgba(0,0,0,.2);
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    button {
+      padding: 15px;
+      font-size: 20px;
+      border-radius: 14px;
+      border: none;
+      background: #f8bbd0;
+      cursor: pointer;
+      transition: transform .15s, background .2s;
+      font-weight: 600;
+      color: #880e4f;
+    }
+
+    button:hover {
+      background: #f48fb1;
+      transform: scale(1.1);
+    }
+
+    .keypad button:last-child {
+      grid-column: 2 / 3;
+    }
+
+    .music-btn {
+      margin-top: 10px;
+      background: #ec407a;
+      color: white;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.25);
+    }
+
+    .music-btn:hover {
+      background: #d81b60;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>💖 Para alguien especial</h2>
+    <p>Ingresa el código y descubre una sorpresa</p>
+
+    <div class="input-display" id="display">••••</div>
+
+    <div class="keypad">
+      <button onclick="add('1')">1</button>
+      <button onclick="add('2')">2</button>
+      <button onclick="add('3')">3</button>
+      <button onclick="add('4')">4</button>
+      <button onclick="add('5')">5</button>
+      <button onclick="add('6')">6</button>
+      <button onclick="add('7')">7</button>
+      <button onclick="add('8')">8</button>
+      <button onclick="add('9')">9</button>
+      <button onclick="add('0')">0</button>
+    </div>
+
+    <button class="music-btn" onclick="toggleMusic()">🎵 Reproducir música</button>
+
+    <audio id="music" src="The Rains of Castamere (Red Wedding Version).mp3"></audio>
+  </div>
+
+  <script>
+    const pass = "0228";
+    const display = document.getElementById("display");
+    const music = document.getElementById("music");
+    const musicBtn = document.querySelector(".music-btn");
+    let input = "";
+    let playing = false;
+
+    function add(num) {
+      if (input.length < 4) input += num;
+      display.textContent = input.padEnd(4, "•");
+
+      if (input.length === 4) {
+        if (input === pass) {
+          window.location.href = "flower.html";
+        } else {
+          alert("Código incorrecto 💔");
+          input = "";
+          display.textContent = "••••";
+        }
+      }
+    }
+
+    function toggleMusic() {
+      if (!playing) {
+        music.play();
+        musicBtn.textContent = "⏸️ Pausar música";
+      } else {
+        music.pause();
+        musicBtn.textContent = "🎵 Reproducir música";
+      }
+      playing = !playing;
+    }
+  </script>
+</body>
+</html>

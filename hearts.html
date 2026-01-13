@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amor 💖</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background: linear-gradient(to top, #ff9a9e, #fad0c4);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family: Poppins, sans-serif;
+  color:white;
+  text-align:center;
+}
+
+h1{
+  position:absolute;
+  top:40%;
+  padding:20px;
+  animation: fade 2s ease;
+  z-index:2;
+}
+
+.heart{
+  position:absolute;
+  bottom:0;
+  pointer-events:none;
+  animation: rise linear forwards;
+}
+
+@keyframes rise{
+  from{
+    transform: translateY(0) scale(0.6);
+    opacity:1;
+  }
+  to{
+    transform: translateY(-900px) scale(1.4);
+    opacity:0;
+  }
+}
+
+@keyframes fade{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="music" src="Alan Walker_ K-391_ Tungevaag_ Mangoo - PLAY (Alan Walker_s Video)(MP3_160K).mp3" autoplay loop></audio>
+
+<h1>
+  Mi corazón siempre te elige.<br>
+  hoy, mañana y en cada 2026 💖<br>
+
+  Puede que en la vida tengamos complicaciones,
+  pero transformemos los problemas criticos en
+  canciones, para encontrar la manera de encajar
+  nuestros pasos asi sincronizarlos, para
+  que nuestra decisión sea libre. Y asi poder 
+  volar juntos en el aire. Porque la vida es agradable,
+  cuando se sabe que uno es irremplazable. y eso es 
+  AMOR.
+</h1>
+
+<script>
+const audio = document.getElementById("music");
+audio.volume = 0.5;
+
+/* ACTIVAR AUDIO EN CELULAR */
+document.addEventListener("click", () => {
+  if (audio.paused) audio.play();
+});
+
+/* WEB AUDIO API */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const ctx = new AudioContext();
+const source = ctx.createMediaElementSource(audio);
+const analyser = ctx.createAnalyser();
+
+source.connect(analyser);
+analyser.connect(ctx.destination);
+analyser.fftSize = 256;
+
+const data = new Uint8Array(analyser.frequencyBinCount);
+
+function createHeart(power){
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.textContent = "💖";
+
+  const size = 18 + power * 0.6;
+  const duration = 3 + power * 0.02;
+
+  heart.style.left = Math.random() * 100 + "%";
+  heart.style.fontSize = size + "px";
+  heart.style.animationDuration = duration + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), duration * 1000);
+}
+
+function syncHearts(){
+  analyser.getByteFrequencyData(data);
+
+  let sum = 0;
+  for(let i = 0; i < data.length; i++){
+    sum += data[i];
+  }
+
+  const average = sum / data.length;
+
+  /* CUANDO PEGA EL BEAT */
+  if(average > 55){
+    createHeart(average);
+  }
+
+  requestAnimationFrame(syncHearts);
+}
+
+/* INICIAR SINCRONIZACIÓN */
+audio.onplay = () => {
+  ctx.resume();
+  syncHearts();
+};
+</script>
+
+</body>
+</html>
